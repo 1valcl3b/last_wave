@@ -5,12 +5,13 @@ from flask import abort, flash
 from pathlib import Path
 from dotenv import load_dotenv
 from provision.confYaml import ConfYaml
-
+import time
 
 
 def configure(app):
 
     path_app = Path(os.path.abspath("app"))
+    log_file = Path(path_app, "provision", "logs", "ms.txt")
     conf_yaml = ConfYaml()
     load_dotenv()
 
@@ -110,6 +111,33 @@ def configure(app):
         return redirect('/config')
 
     # Render page with the configuration result to provision the environment
+
+
+    @app.route('/prepare_up')
+    def prepare_up():
+
+        try:
+            log_file.write_text("up")
+
+            timeout = 180
+            start = time.time()
+
+            while True:
+                if log_file.exists():
+                    status = log_file.read_text().strip()
+
+                    if status == "on":
+                        return redirect("/up")
+
+                if time.time() - start > timeout:
+                    flash("Timeout aguardando Mininet subir", "danger")
+                    return redirect("/config")
+
+                time.sleep(2)
+
+        except Exception as e:
+            flash(f"Erro ao preparar ambiente: {e}", "danger")
+            return redirect("/config")
 
     @app.route('/config')
     def config_result():

@@ -36,9 +36,6 @@ class Provision:
         
 
     def start_mininet(self, topology_type):
-        switch_file = Path("/tmp/ultimo_switch.txt")
-        switch_file.unlink(missing_ok=True)
-
         script = Path(self.get_script_dir()) / "mininet_up.sh"
         subprocess.Popen(["bash", str(script), topology_type])
         print("Função start_mininet acionada")
