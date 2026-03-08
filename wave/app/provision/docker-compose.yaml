@@ -1,17 +1,19 @@
 services:
   apache:
-    build: 
+    # image: ghcr.io/ifpb/new_wave/wave-apache
+    build:
       context: .
       dockerfile: Dockerfile.server
     container_name: server
     #ports:
     #- "80:80"
-    network_mode: none
+    # network_mode: none
 
   client_container:
-    build: 
-      context: .
-      dockerfile: Dockerfile.client
+    # image: ghcr.io/ifpb/new_wave/wave-vlc
+    build:
+      context: ../../../wave-client
+      dockerfile: Dockerfile
     container_name: client
     privileged: true
     #environment:
@@ -35,6 +37,8 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
       - wave_net
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest

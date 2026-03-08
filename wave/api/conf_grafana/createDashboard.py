@@ -454,10 +454,10 @@ data_docker = {
                             "uid": "Prometheus"
                         },
                         "editorMode": "code",
-                        "expr": "irate(container_network_receive_bytes_total{name=~\"server|client\"}[5m])",
+                        "expr": "irate(node_network_receive_bytes_total{device=~\"client|server\"}[5m])",
                         "format": "time_series",
                         "intervalFactor": 2,
-                        "legendFormat": "{{name}} - Receive",
+                        "legendFormat": "{{device}} - Receive",
                         "range": True,
                         "refId": "O",
                         "step": 4
@@ -468,10 +468,10 @@ data_docker = {
                             "uid": "Prometheus"
                         },
                         "editorMode": "code",
-                        "expr": "irate(container_network_transmit_bytes_total{name=~\"server|client\"}[5m])",
+                        "expr": "irate(node_network_transmit_bytes_total{device=~\"client|server\"}[5m])",
                         "format": "time_series",
                         "intervalFactor": 2,
-                        "legendFormat": "{{name}} - Transmit",
+                        "legendFormat": "{{device}} - Transmit",
                         "range": True,
                         "refId": "P",
                         "step": 4

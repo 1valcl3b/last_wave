@@ -91,10 +91,10 @@ class Provision:
         
         if platform == "docker":
             self.execute_command("docker compose up -d")
-            time.sleep(10)
+            time.sleep(30)
             script = Path(self.get_script_dir()) / "up-enviroment.sh"
-            command = f"bash {script} {client_ip} {server_ip}"
-            self.execute_command(command)
+            comando = f"bash {script} {client_ip} {server_ip}"
+            self.execute_command(comando)
         else:
             self.execute_command("vagrant up")
 
@@ -104,7 +104,7 @@ class Provision:
         if platform == "docker":
             script = Path(self.get_script_dir()) / "down-enviroment.sh"
             self.execute_command(f"bash {script}")
-            time.sleep(5)
+            time.sleep(10)
             self.execute_command("docker compose down")
 
         else:
@@ -119,9 +119,11 @@ class Provision:
             if args[0] == 'sin':
                 command = f"""docker exec -it client ./run_wave.sh -l sinusoid {args[2]} {args[3]} {args[4]} {args[5]}"""
             elif args[0] == "step":
+                time.sleep(10)
                 command = f"""docker exec -it client ./run_wave.sh -l stair_step {args[2]} {args[3]} {args[4]}"""
             elif args[0] == "flashc":
                 command = f"""docker exec -it client ./run_wave.sh -l flashcrowd {args[2]} {args[3]} {args[4]}"""
+                print('Carga executada stair step')
             else:
                 return "Invalid scenario. Use: 'sin', 'step' or 'flashc'."
         else:
