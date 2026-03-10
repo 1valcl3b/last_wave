@@ -358,7 +358,7 @@
                     </div>
 
                     <div class="col-md-12">
-                      <label class="form-label">Add delay to network?</label>
+                      <label class="form-label">Configure network conditions</label>
 
                       <div class="form-check form-check-inline">
                        <input class="form-check-input" type="radio" name="use-delay" id="delay-no" value="no" checked/>
@@ -375,6 +375,12 @@
                     <div class="col-md-3 d-none" id="delay-field">
                       <label for="delay" class="form-label">Link Delay (ms)</label>
                       <input class="form-control" type="number" name="delay" id="delay" placeholder="10" min="0" />
+                    </div>
+
+                    <!-- PACKET LOSS FIELD -->
+                    <div class="col-md-3 d-none" id="loss-field">
+                      <label for="loss" class="form-label">Packet Loss (%)</label>
+                      <input class="form-control" type="number" name="loss" id="loss" placeholder="5" min="0" max="100" />
                     </div>
                 </div> 
 

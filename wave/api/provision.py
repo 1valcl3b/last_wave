@@ -91,7 +91,7 @@ class Provision:
         
         if platform == "docker":
             self.execute_command("docker compose up -d")
-            time.sleep(30)
+            time.sleep(60)
             script = Path(self.get_script_dir()) / "up-enviroment.sh"
             comando = f"bash {script} {client_ip} {server_ip}"
             self.execute_command(comando)

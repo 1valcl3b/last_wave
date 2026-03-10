@@ -90,24 +90,25 @@ document.getElementById("vm").addEventListener("click", function() {
   });
 });
 
-// ===== Mininet link delay control =====
+// ===== Mininet conditions network =====
 const delayYes = document.getElementById("delay-yes");
 const delayNo = document.getElementById("delay-no");
 const delayField = document.getElementById("delay-field");
+const lossField = document.getElementById("loss-field");
 
-if (delayYes && delayNo && delayField) {
-  delayYes.addEventListener("change", function () {
-    if (this.checked) {
-      delayField.classList.remove("d-none");
-    }
-  });
+delayYes.addEventListener("change", function () {
+  if (this.checked) {
+    delayField.classList.remove("d-none");
+    lossField.classList.remove("d-none");
+  }
+});
 
-  delayNo.addEventListener("change", function () {
-    if (this.checked) {
-      delayField.classList.add("d-none");
-    }
-  });
-}
+delayNo.addEventListener("change", function () {
+  if (this.checked) {
+    delayField.classList.add("d-none");
+    lossField.classList.add("d-none");
+  }
+});
 
 document.addEventListener("DOMContentLoaded", function () {
 

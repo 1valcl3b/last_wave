@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set +e
 
 CLIENT="client"
 SERVER="server"

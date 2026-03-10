@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent
 CONFIG_FILE = BASE_DIR / "config.yaml"
 SWITCH_FILE = Path("/tmp/ultimo_switch.txt")
 
-def montar_arvore(net, depth, branching, max_switches, delay):
+def montar_arvore(net, depth, branching, max_switches, delay, loss):
     contador = 0
     switches = []
 
@@ -29,10 +29,16 @@ def montar_arvore(net, depth, branching, max_switches, delay):
         contador += 1
 
         if pai:
+
+            link_parametros = {}
+
             if delay: 
-                net.addLink(pai, sw, delay=delay)
-            else:
-                net.addLink(pai, sw)
+                link_parametros['delay'] = delay
+            
+            if loss:
+                link_parametros['loss'] = float(loss)
+            
+            net.addLink(pai,sw, **link_parametros)
 
         if nivel < depth - 1:
             for _ in range(branching):
@@ -71,10 +77,12 @@ def main():
     branching = int(topologia['branching'])
     max_switches = int(topologia['max_switches'])
     delay = topologia.get('delay')
+    loss= topologia.get('loss')
 
     net = Mininet(controller=None,switch=OVSSwitch,link=TCLink,build=False)
 
-    switches = montar_arvore(net,depth=depth,branching=branching,max_switches=max_switches,delay=delay)
+    switches = montar_arvore(net,depth=depth,branching=branching,max_switches=max_switches,delay=delay, loss=loss)
+    
 
     # montar_arvore(
     #     net,

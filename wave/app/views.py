@@ -39,17 +39,15 @@ def configure(app):
   vcpu: "{request.form.get('cpuclient')}"
   platform: {request.form.get('plafmclient')}
 
-"""
-
-            # bloco mininet
+""" 
             topology_type = request.form.get("topology-type")
             delay = request.form.get("delay")
+            loss = request.form.get("loss")
 
             conf_topology = f"""           
 - topology:
     type: "{topology_type}"
 """
-
             
             if topology_type == "tree":
                 conf_topology += f"""\
@@ -57,8 +55,7 @@ def configure(app):
     branching: "{request.form.get('branching')}"
     max_switches: "{request.form.get('switchs')}"
 """
-
-            
+        
             elif topology_type == "linear":
                 conf_topology += f"""\
     num_switches: "{request.form.get('linear_switchs')}"
@@ -68,6 +65,10 @@ def configure(app):
                 conf_topology += f"""\
     delay: "{delay}"
 """
+            if loss and loss.isdigit() and int(loss) <= 100:
+                conf_topology += f"""\
+    loss: "{loss}"
+""" 
 
         if (request.form.get('select-model') == 'sin'):
 

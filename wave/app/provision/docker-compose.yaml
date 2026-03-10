@@ -24,6 +24,9 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix
     depends_on:
       - apache
+      # - prometheus
+      # - cadvisor
+      # - redis
     network_mode: none
 
   prometheus:
