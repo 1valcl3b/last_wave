@@ -1,6 +1,10 @@
 #!/bin/bash
 
-# echo "192.168.0.11 server" | sudo tee -a /etc/hosts
+CONTAINERS_UP="/home/vlc/logs/container_up.txt"
+
+echo "containers up" > "$CONTAINERS_UP"
+
+sleep 30
 
 STATUS_FILE="/home/vlc/logs/ready.txt"
 

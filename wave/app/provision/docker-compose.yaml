@@ -10,10 +10,10 @@ services:
     # network_mode: none
 
   client_container:
-    image: ghcr.io/ifpb/new_wave/wave-vlc
-    # build:
-    #   context: ../../../wave-client
-    #   dockerfile: Dockerfile
+    # image: ghcr.io/ifpb/new_wave/wave-vlc
+    build:
+      context: ../../../wave-client
+      dockerfile: Dockerfile
     container_name: client
     privileged: true
     #environment:

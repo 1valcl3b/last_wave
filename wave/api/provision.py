@@ -40,9 +40,9 @@ class Provision:
         subprocess.Popen(["bash", str(script), topology_type])
         # print("Função start_mininet acionada")
 
-    def wait_mininet(self, timeout=60):
+    def wait_mininet(self, timeout=180):
         switch_file = Path("/tmp/ultimo_switch.txt")
-        start = time.time()
+        start = time.time() 
 
         while not switch_file.exists():
             if time.time() - start > timeout:
@@ -55,6 +55,18 @@ class Provision:
         
         subprocess.Popen(["bash", str(script)])
         # print("Função stop_mininet acionada")
+
+
+    def wait_container(self, timeout=180):
+        logs_dir = Path(self.get_script_dir()) / "logs"
+        container_file = logs_dir / "container_up.txt"
+
+        start = time.time()
+
+        while not container_file.exists():
+            if time.time() - start > timeout:
+                raise RuntimeError("Container startup timeout")
+            time.sleep(1)
     ## ///
 
     def get_script_dir(self):
@@ -91,39 +103,39 @@ class Provision:
         
         if platform == "docker":
             self.execute_command("docker compose up -d")
-            time.sleep(30)
+            self.wait_container()
+
             script = Path(self.get_script_dir()) / "up-enviroment.sh"
             comando = f"bash {script} {client_ip} {server_ip}"
-            self.execute_command(comando)
+            
+            self.execute_command(comando) 
         else:
-            self.execute_command("vagrant up")
+            self.execute_command("vagrant up") 
 
-    def down(self, platform):
+    def down(self, platform): 
         # Destroy the environment (Docker or Vagrant and Mininet)
         
         if platform == "docker":
             script = Path(self.get_script_dir()) / "down-enviroment.sh"
             self.execute_command(f"bash {script}")
-            time.sleep(10)
+            time.sleep(5)
             self.execute_command("docker compose down")
 
         else:
             self.execute_command("vagrant destroy -f")
 
-        time.sleep(10)
+        time.sleep(5)
         self.stop_mininet()
-
+   
     def execute_scenario(self, *args):
         # Execute scenarios based on user input
         if args[1] == "docker":
             if args[0] == 'sin':
-                command = f"""docker exec -it client ./run_wave.sh -l sinusoid {args[2]} {args[3]} {args[4]} {args[5]}"""
+                command = f"""docker exec -d client ./run_wave.sh -l sinusoid {args[2]} {args[3]} {args[4]} {args[5]}"""
             elif args[0] == "step":
-                time.sleep(10)
-                command = f"""docker exec -it client ./run_wave.sh -l stair_step {args[2]} {args[3]} {args[4]}"""
+                command = f"""docker exec -d client ./run_wave.sh -l stair_step {args[2]} {args[3]} {args[4]}"""
             elif args[0] == "flashc":
-                command = f"""docker exec -it client ./run_wave.sh -l flashcrowd {args[2]} {args[3]} {args[4]}"""
-                print('Carga executada stair step')
+                command = f"""docker exec -d client ./run_wave.sh -l flashcrowd {args[2]} {args[3]} {args[4]}"""
             else:
                 return "Invalid scenario. Use: 'sin', 'step' or 'flashc'."
         else:
