@@ -2,7 +2,7 @@
 
 set -e
 
-sudo mn -c  >/dev/null 2>&1
+sudo mn -c &> /dev/null
 
 sudo pkill -f net-linear.py
 

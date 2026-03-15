@@ -4,7 +4,7 @@
 
 [Salão de Ferramentas SBRC 2025 (previous work)](https://doi.org/10.5753/sbrc_estendido.2025.6301)
 
-Experimentation is a crucial step in many types of scientific research, enabling researchers to evaluate the validity of their hypotheses. In computer networks, one of the key challenges during the experimentation phase is finding load generators capable of accurately modeling diverse traffic patterns for various applications. To address this issue, our previous work introduced a load generator designed to generate load based on real application behavior. In this sense, this work improves the WAVE - Workload Assay for Verified Experiments. A new WAVE version can generate loads for three distinct patterns: sinusoid, flashcrowd, and step. Additionally, it now supports microbursts and container-based environments.
+Experimentation is fundamental in computer networks research, especially for validating hypotheses in controlled scenarios. In this context, this work presents a new version of WAVE (Workload Assay for Verified Experiments) integrated with Mininet, a widely used network emulator. This integration allows researchers to have greater control over the network environment where the generated traffic will be evaluated, enabling the configuration of network characteristics such as delay and packet loss. Currently, WAVE supports the linear and tree topologies, which are configured through user-defined parameters, allowing greater flexibility in the creation of experimental scenarios.
 
 This repository is organized into three main sections: requirements, download and initialization, and finalization of the new WAVE tool.
 
@@ -32,6 +32,16 @@ This repository is organized into three main sections: requirements, download an
 
 ![wave-version-vagrant](./screenshots/wave-version-vagrant2.png)
 
+### Checking what version of Mininet is installed
+
+![wave-version-mininet](./screenshots/wave-version-mininet.png)
+
+We recommend installing Mininet from the official website, as it provides the most up-to-date version:  
+https://mininet.org/download/
+
+Although Mininet can also be installed using `apt install mininet`, the version available in the distribution repositories may not be the most recent one.
+
+
 The versions shown in the figures were those tested at the time of this manual's creation.
 
 ## Downloading the Code and Starting the Environment
@@ -52,7 +62,7 @@ As can be seen in the figure above, the WAVE Initialization module uses two cont
 
 ### The WAVE Web module can be accessed via a browser
 
-![wave-web-home](./screenshots/wave-2.png)
+![wave-web-home](./screenshots/wave-configurator2026.png)
 
 The form contains fields for entering network data for both the traffic load source and destination. In addition to the IP address, it is possible to select environment provisioning through a container or a virtual machine with configurable memory size and number of virtual CPUs. Finally, the user can choose which workload model to apply, either sinusoid, flashcrowd or step and if they want to use micro-burst as well.
 
