@@ -50,7 +50,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     
       elsif entrada['traffic'] == "server"
         set.vm.network "public_network", ip: entrada['ip'], bridge: ls
-        set.vm.network "private_network", ip: "192.168.56.11"
+        set.vm.network "private_network", ip: "192.168.56.50"
 
 
       end
