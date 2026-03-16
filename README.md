@@ -51,8 +51,8 @@ The versions shown in the figures were those tested at the time of this manual's
 ### Cloning the official repository and starting the system:
 
 ```
-$ git clone https://github.com/ifpb/new_wave.git
-$ cd new_wave/wave
+$ git clone https://github.com/1valcl3b/last_wave.git
+$ cd last_wave/wave
 $ ./app-compose.sh --start
 ```
 
