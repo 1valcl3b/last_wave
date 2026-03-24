@@ -14,7 +14,7 @@ CONFIG_FILE = BASE_DIR / "config.yaml"
 SWITCH_FILE = Path("/tmp/last_switch.txt")
 
 
-def montar_linear(net, num_switches, delay=None,loss=None, links_cfg=None):
+def montar_linear(net, num_switches, delay=None,loss=None, bw=None, links_cfg=None):
     link_map = {}
     if links_cfg:
         for l in links_cfg:
@@ -45,6 +45,9 @@ def montar_linear(net, num_switches, delay=None,loss=None, links_cfg=None):
 
                 if 'loss' in l:
                     link_parametros['loss'] = float(l['loss'])
+                
+                if 'bw' in l:
+                    link_parametros['bw'] = float(l['bw'])
 
             else:
                 # modo global
@@ -53,6 +56,9 @@ def montar_linear(net, num_switches, delay=None,loss=None, links_cfg=None):
 
                 if loss:
                     link_parametros['loss'] = float(loss)
+
+                if bw:
+                    link_parametros['bw'] = float(bw)
 
             net.addLink(pai, sw, **link_parametros)
 
@@ -81,11 +87,12 @@ def main():
     num_switches = int(topologia['num_switches'])
     delay = topologia.get('delay')
     loss= topologia.get('loss')
+    bw = topologia.get('bw')
     links_cfg = topologia.get('links')
 
     net = Mininet(controller=None,switch=OVSSwitch,link=TCLink,build=False)
 
-    switches = montar_linear(net,num_switches,delay=delay,loss=loss,links_cfg=links_cfg)
+    switches = montar_linear(net,num_switches,delay=delay,loss=loss,bw=bw,links_cfg=links_cfg)
 
     net.build()
     net.start()
@@ -101,5 +108,4 @@ def main():
     net.stop()
 
 
-if __name__ == "__main__":
-    main()
+main()

@@ -1,4 +1,3 @@
-
 // RANGE <-> NUMBER SYNC
 
 function setValueRangeNumber(idInRanger, idInNumber){
@@ -121,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (selected === "linear")
       linearConfig.classList.remove("d-none");
 
-    updateLinks(); // <-- recalcula tabela ao trocar topologia
+    updateLinks();
   }
 
   topologySelect.addEventListener("change", toggleTopologyFields);
@@ -129,7 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // ==============================
-// DELAY / LOSS MODE
+// NETWORK MODE (DELAY / LOSS / BW)
 // ==============================
 const delayNone = document.getElementById("delay-none");
 const delayGlobal = document.getElementById("delay-global");
@@ -137,6 +136,8 @@ const delaySpecific = document.getElementById("delay-specific");
 
 const delayField = document.getElementById("delay-field");
 const lossField = document.getElementById("loss-field");
+const bwField = document.getElementById("bw-field"); // ✅ NOVO
+
 const specificTable = document.getElementById("specific-delay-table");
 
 function updateDelayMode() {
@@ -144,18 +145,21 @@ function updateDelayMode() {
   if (delayNone.checked) {
     delayField.classList.add("d-none");
     lossField.classList.add("d-none");
+    bwField.classList.add("d-none"); // ✅ NOVO
     specificTable.classList.add("d-none");
   }
 
   if (delayGlobal.checked) {
     delayField.classList.remove("d-none");
     lossField.classList.remove("d-none");
+    bwField.classList.remove("d-none"); // ✅ NOVO
     specificTable.classList.add("d-none");
   }
 
   if (delaySpecific.checked) {
     delayField.classList.add("d-none");
     lossField.classList.add("d-none");
+    bwField.classList.add("d-none"); // ✅ NOVO
     specificTable.classList.remove("d-none");
   }
 }
@@ -230,6 +234,7 @@ function populateDelayTable(links) {
         <td>${link.src} ↔ ${link.dst}</td>
         <td><input type="number" name="delay_${link.src}_${link.dst}" class="form-control" min="0"></td>
         <td><input type="number" name="loss_${link.src}_${link.dst}" class="form-control" min="0" max="100"></td>
+        <td><input type="number" name="bw_${link.src}_${link.dst}" class="form-control" min="0"></td> <!-- ✅ NOVO -->
       </tr>
     `;
     delayTableBody.insertAdjacentHTML("beforeend", row);

@@ -41,7 +41,7 @@ def configure(app):
 
 """
             topology_type = request.form.get("topology-type")
-            delay_mode = request.form.get("delay-mode")
+            delay_mode = request.form.get("network-mode")
 
             conf_topology = f"""          
 - topology:
@@ -63,6 +63,7 @@ def configure(app):
             if delay_mode == "global":
                 delay = request.form.get("delay")
                 loss = request.form.get("loss")
+                bw = request.form.get("bw")
 
                 try:
                     if delay and float(delay) > 0:
@@ -76,6 +77,12 @@ def configure(app):
                 except ValueError:
                     pass
 
+                try:
+                    if bw and float(bw) > 0:
+                        conf_topology += f'    bw: "{bw}"\n'
+                except ValueError:
+                    pass
+
             elif delay_mode == "specific":
                 conf_topology += "    links:\n"
 
@@ -84,6 +91,7 @@ def configure(app):
                         _, src, dst = key.split("_")
                         delay_val = request.form.get(key)
                         loss_val = request.form.get(f"loss_{src}_{dst}")
+                        bw_val = request.form.get(f"bw_{src}_{dst}")
 
                         link_block = f"""\
       - src: "{src}"
@@ -98,6 +106,12 @@ def configure(app):
                         try:
                             if loss_val and float(loss_val) > 0:
                                 link_block += f'        loss: "{loss_val}"\n'
+                        except ValueError:
+                            pass
+
+                        try:
+                            if bw_val and float(bw_val) > 0:
+                                link_block += f'        bw: "{bw_val}"\n'
                         except ValueError:
                             pass
 

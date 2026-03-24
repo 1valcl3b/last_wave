@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent
 CONFIG_FILE = BASE_DIR / "config.yaml"
 SWITCH_FILE = Path("/tmp/last_switch.txt")
 
-def montar_arvore(net, depth, branching, max_switches, delay=None, loss=None, links_cfg=None):
+def montar_arvore(net, depth, branching, max_switches, delay=None, loss=None,bw=None ,links_cfg=None):
     link_map = {}
     if links_cfg:
         for l in links_cfg:
@@ -39,7 +39,7 @@ def montar_arvore(net, depth, branching, max_switches, delay=None, loss=None, li
             src = pai.name
             dst = nome
 
-            # Modo specific
+            # Mode specific
             if links_cfg and (src, dst) in link_map:
                 l = link_map[(src, dst)]
 
@@ -49,13 +49,19 @@ def montar_arvore(net, depth, branching, max_switches, delay=None, loss=None, li
                 if 'loss' in l:
                     link_parametros['loss'] = float(l['loss'])
 
+                if 'bw' in l:
+                    link_parametros['bw'] = float(l['bw'])
+
             else:
-                # Modo global
+                # Mode global
                 if delay:
                     link_parametros['delay'] = delay
 
                 if loss:
                     link_parametros['loss'] = float(loss)
+                
+                if bw:
+                    link_parametros['bw']= float(bw)
 
             net.addLink(pai, sw, **link_parametros)
 
@@ -97,11 +103,12 @@ def main():
     max_switches = int(topologia['max_switches'])
     delay = topologia.get('delay')
     loss= topologia.get('loss')
+    bw = topologia.get('bw')
     links_cfg = topologia.get('links')
 
     net = Mininet(controller=None,switch=OVSSwitch,link=TCLink,build=False)
 
-    switches = montar_arvore(net,depth=depth,branching=branching,max_switches=max_switches,delay=delay,loss=loss,links_cfg=links_cfg)
+    switches = montar_arvore(net,depth=depth,branching=branching,max_switches=max_switches,delay=delay,loss=loss,bw=bw,links_cfg=links_cfg)
 
 
 
