@@ -73,7 +73,6 @@ WAVE uses technologies that may impact the host system, such as Docker and Minin
 
 ### Recommendations
 
-- Run WAVE in an isolated environment (virtual machine)
 - Avoid running in production environments
 - Ensure the user has appropriate permissions
 - Monitor CPU and memory usage during experiments
