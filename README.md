@@ -2,18 +2,20 @@
 
 Experimentation is fundamental in computer networks research, especially for validating hypotheses in controlled scenarios. In this context, this work presents a new version of WAVE (Workload Assay for Verified Experiments) integrated with Mininet, a widely used network emulator. This integration allows researchers to have greater control over the network environment where the generated traffic will be evaluated, enabling the configuration of network characteristics such as delay and packet loss. Currently, WAVE supports the linear and tree topologies, which are configured through user-defined parameters, allowing greater flexibility in the creation of experimental scenarios.
 
-##  README Structure
+## README Structure
 
 - **Seals Considered**: describes the artifact evaluation criteria.
-- **Project information**: useful links, including user manual, previous work, and demonstration videos.
-- **Basic information**: presents the hardware and software requirements needed for execution.
-- **Dependencies**: lists the tools and libraries used.
-- **Running**: describes how to configure and start the environment.
-- **Security concerns**: describes potential risks and safe execution practices.
-- **Minimum Test**: presents a simple scenario to validate the installation.
-- **Ending the WAVE Execution**: describes how to properly terminate the environment.
-- **Experiments**: describes how to reproduce one of the experiments presented in the paper.
-- **LICENSE**: presents the project license information.
+- **Project Information**: provides useful resources such as documentation, previous work, and demonstration videos.
+- **Basic Information**: outlines hardware and operating system requirements.
+- **Dependencies**: lists required tools and their expected versions.
+- **Security Concerns**: highlights potential risks and safe execution practices.
+- **Checking the Required Requirements**: explains how to install dependencies, including the automated installation script (`install.sh`) and manual fallback steps.
+- **Running**: describes how to start the WAVE environment.
+- **Troubleshooting**: provides guidance for common issues and links to the troubleshooting guide.
+- **Minimum Test**: presents a validation procedure to confirm the correct setup of the environment.
+- **Ending the WAVE Execution**: explains how to properly stop and clean up the environment.
+- **Experiments**: details how to reproduce experiments presented in the paper.
+- **LICENSE**: provides licensing information.
 
 ## Seals Considered
 
@@ -58,8 +60,8 @@ WAVE integrates multiple technologies for network experimentation:
 
 To run WAVE, the following dependencies are required:
 
-- **Python 3** (version 3.11 or higher)
-- **Virtualenv** (version 3.11 or higher)
+- **Python 3** (version 3.10 or higher)
+- **Virtualenv** (version 3.10 or higher)
 - **Docker** (version 27.x or higher)
 - **Docker Compose** (version 2.32.x or higher)
 - **Mininet** (installation via the official website is recommended)
@@ -83,7 +85,22 @@ No critical risks were identified, provided that the best practices above are fo
 
 ## Checking the Required Requirements
 
-### Checking if Python3 is installed and it's version:
+To simplify the setup process and improve reproducibility, we provide an automated installation script that installs and configures all required dependencies. If the script fails for any reason, you can follow the manual step-by-step installation described in this README.
+
+> [!NOTE]
+> Ensure you are in the correct directory before executing the commands below. The commands assume that you are inside the project path `last_wave/wave/`, where the `install.sh` script is located.
+
+```
+chmod +x install.sh
+./install.sh
+```
+
+> [!NOTE]
+> This script requires sudo privileges. You may be prompted for your password during execution.
+
+### If the script fails, or if you prefer to perform the installation manually, follow the steps below:
+
+#### Checking if Python3 is installed and it's version:
 
 <!-- ![wave-version-python3](./screenshots/wave-version-python32.png) -->
 
@@ -96,7 +113,7 @@ If it is not installed:
 sudo apt update && sudo apt install python3
 ```
 
-### Additionally, the VirtualEnv virtual environment is required:
+#### Additionally, the VirtualEnv virtual environment is required:
 
 <!-- ![wave-version-venv](./screenshots/wave-version-venv2.png) -->
 
@@ -109,7 +126,7 @@ If it is not installed:
 sudo apt update && sudo apt install python3-venv
 ```
 
-### Checking the Docker and docker compose components:
+#### Checking the Docker and docker compose components:
 
 <!-- ![wave-version-docker](./screenshots/wave-version-docker2.png)
 
@@ -135,7 +152,7 @@ sudo sh ./get-docker.sh
 ```
 After installation, you may need to configure permissions and add your user to the docker group.
 
-### Checking what version of Virtualbox is installed:
+#### Checking what version of Virtualbox is installed:
 
 <!-- ![wave-version-virtualbox](./screenshots/wave-version-virtualbox2.png) -->
 
@@ -150,7 +167,7 @@ sudo apt install virtualbox
 ```
 If VirtualBox is not available in the repository, install it from the [official website](https://www.virtualbox.org/wiki/Linux_Downloads).
 
-### Checking what version of Vagrant is installed:
+#### Checking what version of Vagrant is installed:
 
 <!-- ![wave-version-vagrant](./screenshots/wave-version-vagrant2.png) -->
 
@@ -168,7 +185,7 @@ sudo apt update && sudo apt install vagrant
 
 ```
 
-### Checking what version of Mininet is installed
+#### Checking what version of Mininet is installed
 
 <!-- ![wave-version-mininet](./screenshots/wave-version-mininet.png) -->
 
@@ -196,7 +213,11 @@ The versions shown in the figures were those tested at the time of this manual's
 
 ```
 git clone https://github.com/1valcl3b/last_wave.git
+```
+```
 cd last_wave/wave
+```
+```
 ./app-compose.sh --start
 ```
 
@@ -211,6 +232,23 @@ As can be seen in the figure above, the WAVE Initialization module uses two cont
 ![wave-web-home](./screenshots/wave-configurator-2026.png)
 
 The form contains fields for entering network data for both the traffic load source and destination. In addition to specifying the IP address, the user can choose how the environment will be provisioned, either through a container or a virtual machine, with configurable memory size and number of virtual CPUs. It is also possible to configure the network topology through user-defined parameters. Currently, the WAVE supports linear and tree topologies. Finally, the user can select which workload model to apply, such as sinusoid, flashcrowd, or step, and optionally enable the use of micro-burst traffic.
+
+## Troubleshooting
+
+During installation and execution, issues may arise depending on the host environment, system configuration, or network setup.
+
+A curated list of common problems and their respective solutions is available in:
+
+[Troubleshooting Guide](./docs/troubleshooting.md)
+
+This document includes real issues observed during testing, including known environment-specific problems such as Docker port binding restrictions (`net.ipv4.ip_unprivileged_port_start=80`), among others.
+
+> [!IMPORTANT]
+> The number of possible environment-specific issues is large. The troubleshooting guide contains known and reproducible cases, but it is not exhaustive.
+
+> [!NOTE]
+> If you encounter an issue not documented in the troubleshooting guide, please contact the authors.  
+> New issues and their respective solutions will be analyzed and added to improve reproducibility.
 
 ## Minimum Test
 
@@ -241,9 +279,13 @@ It is expected that the containers `wave_app`, `node-exporter`, and `grafana` ar
 
 4. Access the web interface in the browser (use Chrome or Brave):
 
+> [!NOTE]
+> If running on a remote server, replace `localhost` with the machine's IP address.
 ```
 http://localhost
 ```
+> [!NOTE]
+> Ensure that the required ports (e.g., 80) are open and accessible in your environment (firewall, cloud security groups, or VM networking).
 
 5. Configure a simple experiment:
 
@@ -263,8 +305,9 @@ If this is your first execution, the process may take longer because the Vagrant
 ### Expected result
 
 - The environment will be provisioned (this may take some time)
-- The results web interface should appear
-- Metrics should be visualized through charts
+- The results web interface should appear, Metrics should be visualized through charts
+
+![wave-web-grafana](./screenshots/wave-web-grafana2026.png)
 
 If all steps are completed successfully, the environment is ready for use. If any issues are encountered while starting or terminating the environment, we recommend consulting the demonstration videos available in the Project Information section. In particular, the first video provides a complete walkthrough of the tool execution.
 
@@ -303,6 +346,8 @@ cd last_wave/wave
 
 3. Access the Web interface (use chrome or brave):
 
+> [!NOTE]
+> If running on a remote server, replace `localhost` with the machine's IP address.
 ```
 http://localhost
 ```
