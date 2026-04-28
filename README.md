@@ -34,6 +34,10 @@ This section provides useful resources related to the WAVE tool, including docum
 [Salão de Ferramentas SBRC 2025 (previous work)](https://doi.org/10.5753/sbrc_estendido.2025.6301)
 
 [Demonstrative videos of the WAVE tool](https://drive.google.com/drive/folders/1E3_Gj1HX8jhLEx9tRARIDYxlm8bzkNN3?usp=drive_link)
+> [!NOTE]
+> The video **demo01-wave** demonstrates how to download, run, and validate the tool.
+> The video **demo02-wave-delay** shows an experiment where delay is injected into the network.
+> The video **demo03-wave-linkdown** presents a scenario in which a network link is disabled to observe traffic interruption at the server interface, followed by re-enabling the link to restore connectivity.
 
 ## Basic information
 
@@ -88,15 +92,12 @@ No critical risks were identified, provided that the best practices above are fo
 To simplify the setup process and improve reproducibility, we provide an automated installation script that installs and configures all required dependencies. If the script fails for any reason, you can follow the manual step-by-step installation described in this README.
 
 > [!NOTE]
-> Ensure you are in the correct directory before executing the commands below. The commands assume that you are inside the project path `last_wave/wave/`, where the `install.sh` script is located.
+> Ensure you are in the correct directory before executing the commands below. The commands assume that you are inside the project path `last_wave/wave/`, where the `install.sh` script is located. This script requires sudo privileges. You may be prompted for your password during execution.
 
 ```
 chmod +x install.sh
 ./install.sh
 ```
-
-> [!NOTE]
-> This script requires sudo privileges. You may be prompted for your password during execution.
 
 ### If the script fails, or if you prefer to perform the installation manually, follow the steps below:
 
@@ -309,7 +310,7 @@ If this is your first execution, the process may take longer because the Vagrant
 
 ![wave-web-grafana](./screenshots/wave-web-grafana2026.png)
 
-If all steps are completed successfully, the environment is ready for use. If any issues are encountered while starting or terminating the environment, we recommend consulting the demonstration videos available in the Project Information section. In particular, the first video provides a complete walkthrough of the tool execution.
+If you prefer a visual walkthrough of this process, you can watch the following [video](https://drive.google.com/file/d/1zQZR1eSVeXidqYWtyl0KJyLb4BZZFsvv/view), It demonstrates the complete workflow, from cloning the repository to executing the tool and visualizing the results.
 
 ## Ending the WAVE Execution
 
@@ -353,11 +354,43 @@ http://localhost
 ```
 4. Use the following base configuration:
 
-- Platform: VM
+- Platform: Docker
 - Topology: Linear, Number of switches: 5
 - Workload model: Stair Step, Interval: 5, Jump: 10, Duration: 10
 
-Now you will configure scenarios with different delay values. For each scenario, a new environment must be configured, changing only the delay parameter while keeping the remaining settings the same. There is no need to repeat the installation or startup steps, since the Analysis Result screen includes a `Destroy` button that terminates the current environment and returns you to the home page. Once you return to the initial screen, you can configure the next scenario.
+### Important Note on Metrics
+
+In the original paper, the evaluation considers metrics such as:
+
+- Throughput
+- Round-Trip Time (RTT)
+
+WAVE, by design, does not natively compute or expose these metrics directly in its interface. Instead, it relies on an observability stack composed of:
+
+- Prometheus (metrics collection)
+- Grafana (visualization)
+
+This architecture allows users to extract and analyze network behavior in a flexible way.
+
+---
+
+#### Reproducing Paper Results
+
+The results presented in the paper were obtained by collecting metrics from Prometheus during the experiments and plotting the corresponding graphs externally.
+
+These graphs include:
+
+- RTT comparison between scenarios with injected delay and without
+delay
+- Throughput comparison between scenarios with packet loss and without loss.
+  
+Although WAVE does not natively generate these specific plots, the integration with Prometheus and Grafana enables straightforward extraction of the required data, allowing full reproduction of the figures shown in the paper.
+
+---
+
+### Experiment Execution
+
+Now you will configure scenarios with different delay values. For each scenario, a new environment must be configured, changing only the delay parameter while keeping the remaining settings the same. There is no need to repeat the installation or startup steps, since the Analysis Result screen includes a `Destroy` button that terminates the current environment and returns you to the home page.
 
 ### Scenario 1: Baseline
 
@@ -365,9 +398,13 @@ Configure:
 
 - Delay: 0 ms
 
+![wave-exper-input-delay](./screenshots/wave-baseline1.png)
+
 Execute the experiment.
 
 Expected result:
+
+![wave-exper-input-delay](./screenshots/wave-baseline2.png)
 
 - The environment should be provisioned successfully
 - The Analysis Result screen should be displayed
@@ -382,10 +419,14 @@ Expected execution time:
 Configure:
 
 - Delay: 10 ms
+  
+![wave-exper-input-delay](./screenshots/wave-delay10ms.png)
 
 Execute the experiment.
 
 Expected result:
+
+![wave-exper-input-delay](./screenshots/wave-delay10ms-res.png)
 
 - The Analysis Result screen should be displayed
 - Traffic should continue reaching the server interface
@@ -400,10 +441,14 @@ Expected execution time:
 Configure:
 
 - Delay: 50 ms
+  
+![wave-exper-input-delay](./screenshots/wave-delay50ms.png)
 
 Execute the experiment.
 
 Expected result:
+
+![wave-exper-input-delay](./screenshots/wave-delay50ms-res.png)
 
 - The Analysis Result screen should be displayed
 - Traffic should continue reaching the server interface
@@ -420,10 +465,14 @@ In all scenarios, the **Analysis Results** screen should display:
 - Traffic arriving at the server network interface
 - CPU usage
 - Memory usage
+  
+The expected behavior is that, as the configured delay increases, the amount of Mbps reaching the server interface decreases proportionally. This behavior is consistent with the results presented in the paper and demonstrates that WAVE correctly applies Mininet delay parameters in a reproducible experimental environment. Additionally, by leveraging Prometheus and Grafana, users can further analyze:
 
-The expected behavior is that, as the configured delay increases, the amount of Mbps reaching the server interface decreases proportionally.
+- Throughput variations over time
+- Latency-related effects
+- Resource utilization under different network conditions
 
-This demonstrates that WAVE correctly applies Mininet delay parameters in a reproducible experimental environment.
+This enables a more detailed evaluation aligned with the metrics discussed in the paper.
 
 ## LICENSE
 
