@@ -91,6 +91,12 @@ No critical risks were identified, provided that the best practices above are fo
 
 To simplify the setup process and improve reproducibility, we provide an automated installation script that installs and configures all required dependencies. If the script fails for any reason, you can follow the manual step-by-step installation described in this README.
 
+If you're going to use the dependency installation script, you need to do a git clone of the repository first.
+
+```
+git clone https://github.com/1valcl3b/last_wave.git
+```
+
 > [!NOTE]
 > Ensure you are in the correct directory before executing the commands below. The commands assume that you are inside the project path `last_wave/wave/`, where the `install.sh` script is located. This script requires sudo privileges. You may be prompted for your password during execution.
 
